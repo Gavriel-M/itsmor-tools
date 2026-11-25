@@ -2,6 +2,7 @@ import { fileURLToPath } from "node:url";
 import { PALETTE } from "@itsmor/tokens";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import { playwright } from "@vitest/browser-playwright";
 import type { Plugin } from "vite";
 import { defineConfig } from "vitest/config";
 
@@ -22,6 +23,12 @@ function themeColor(): Plugin {
 
 export default defineConfig({
   plugins: [react(), tailwindcss(), themeColor()],
+  assetsInclude: ["**/*.heic"],
+  optimizeDeps: {
+    include: ["comlink", "exifr"],
+    exclude: ["@jsquash/jpeg"],
+  },
+  worker: { format: "es" },
   build: {
     rolldownOptions: {
       input: {
@@ -31,6 +38,28 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["tests/**/*.test.{ts,mjs}"],
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          include: ["tests/**/*.test.{ts,mjs}"],
+          exclude: ["tests/browser/**"],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "browser",
+          include: ["tests/browser/**/*.test.ts"],
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright(),
+            instances: [{ browser: "chromium" }, { browser: "webkit" }],
+          },
+        },
+      },
+    ],
   },
 });

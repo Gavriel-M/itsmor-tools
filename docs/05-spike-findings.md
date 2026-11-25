@@ -1,6 +1,6 @@
 # 05 · Spike findings
 
-**Status:** 25 Nov 2026; the iPhone 24 MP run and two picker variants are outstanding ·
+**Status:** 25 Nov 2026; two iPhone picker variants are outstanding ·
 **Changes:** [03 · Technical design](./03-technical-design.md)
 
 Phase 2 measured the paths the design was least sure of, before any engine code. The spike
@@ -26,8 +26,11 @@ page was throwaway and is not in this repo.
 | WebKit, Mac    | 0.15 s                 | 1.8 s                       | 3.6 s                |
 | Safari, iPhone | 0.45 s                 | 3.9 s                       | 8.1 s                |
 
-At 24 MP on the Mac: native 0.35 s (WebKit), wasm 4.0–4.2 s, AVIF 7–8 s. A 24 MP canvas
-works on desktop WebKit; whether it does on iOS is the outstanding run.
+At 24 MP on the Mac: native 0.35 s (WebKit), wasm 4.0–4.2 s, AVIF 7–8 s.
+
+At 24 MP on the iPhone: native 0.84 s (0.33 s decode, 0.51 s encode), libheif + convert +
+mozjpeg 8.5 s, AVIF 14.6 s. The full 5712 × 4284 `OffscreenCanvas` worked in the worker, so
+the 16.7 MP iOS canvas limit did not apply; the engine's canvas probe gained a 25 MP step.
 
 ## Size
 

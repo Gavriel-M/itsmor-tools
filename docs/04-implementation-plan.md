@@ -11,7 +11,7 @@ that runs.
 | 1   | **`@itsmor/tokens`** (itsmor PR `ITSMOR-0016`) | `packages/tokens` in the itsmor workspace, the guard moved to it, published to npm                          | npm org `itsmor`                    | Done        |
 | 2   | **Spike: the hard paths**                      | A throwaway page converting a 24 MP P3 HEIC to JPEG and AVIF on an iPhone, with timings and colour compared | —                                   | Mostly done |
 | 3   | **Scaffold**                                   | Vite, React, Tailwind, tokens, fonts, lint, format, CI; the empty page in itsmor's design                   | Phase 1 (or a temporary local link) | Done        |
-| 4   | **Engine**                                     | Sniffing, worker, scheduler, native path, JPEG/PNG/WebP; unit tests                                         | 3                                   |             |
+| 4   | **Engine**                                     | Sniffing, worker, scheduler, native path, JPEG/PNG/WebP; unit tests                                         | 3                                   | Done        |
 | 5   | **Wasm codecs**                                | HEIC decode, AVIF and WebP encode, the large-image path, the capability probe                               | 2, 4                                |             |
 | 6   | **UI**                                         | Drop zone, queue, settings, results, before and after sizes, ZIP, metadata report                           | 4                                   |             |
 | 7   | **Privacy and offline**                        | CSP in dev and preview, service worker, the privacy panel                                                   | 6                                   |             |
@@ -43,6 +43,20 @@ Mono self-hosted through Fontsource, ESLint, Prettier, Vitest, a hex guard and C
 is the empty page in itsmor's design: the promise, a drop zone that is a real file input, and
 the formats. Selecting files does nothing yet; that is phase 6. How it fits together is in
 [`CLAUDE.md`](../CLAUDE.md).
+
+**Phase 4.** `src/engine/` converts JPEG, PNG, WebP, GIF, BMP, and HEIC where the browser
+decodes it, to JPEG, PNG and WebP, behind one call: `createConverter().convert(job)`. Files
+are sniffed by their bytes and sized from their headers on the main thread; a Comlink worker
+pool decodes natively, resizes on a canvas and encodes JPEG with mozjpeg. The scheduler
+holds the memory budget and the concurrency limit, and cancels by terminating the worker.
+The report credits only what the input carried. Paths that need wasm — HEIC on Chromium,
+WebP on Safari, images over the canvas limit — fail with a named error that phase 5
+replaces by adding codecs; the P3 → sRGB matrix phase 5 needs is in place and tested.
+93 engine unit tests run in Node and 36 engine tests in each of Chromium and WebKit, on
+fixtures generated
+by `tools/fixtures.sh`; every output is re-read with exifr. A 3.8 MP JPEG re-encodes in
+about 0.56 s in Chromium and 0.65 s in WebKit on the Mac. The changes from the design are
+recorded in [03 · Technical design](./03-technical-design.md).
 
 ## Phase 1 in detail
 
