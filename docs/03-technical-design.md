@@ -30,8 +30,8 @@ type Job = {
   id: string;
   file: File;
   target: "image/jpeg" | "image/png" | "image/webp" | "image/avif";
-  quality: number;          // 0–1; ignored for PNG
-  maxDimension?: number;    // longest edge, px
+  quality: number; // 0–1; ignored for PNG
+  maxDimension?: number; // longest edge, px
 };
 
 type JobResult = {
@@ -39,7 +39,7 @@ type JobResult = {
   output: Blob;
   width: number;
   height: number;
-  removed: MetadataItem[];  // for the report
+  removed: MetadataItem[]; // for the report
   codecPath: "native" | "wasm";
   ms: number;
 };
@@ -95,8 +95,8 @@ read back.
   reservation does not fit. One job larger than the whole budget still runs, alone.
 - Cancellation: removing a file from the queue terminates its worker if it is running, and a
   fresh worker replaces it.
-- Failure is per file, never per batch. Each error names the reason in words: *"This HEIC uses
-  a feature the decoder doesn't support"*, not a stack trace.
+- Failure is per file, never per batch. Each error names the reason in words: _"This HEIC uses
+  a feature the decoder doesn't support"_, not a stack trace.
 
 ## Codec registry
 
@@ -105,13 +105,13 @@ interface Codec {
   id: string;
   decodes?: Format[];
   encodes?: Format[];
-  load(): Promise<void>;   // dynamic import of JS glue plus wasm
+  load(): Promise<void>; // dynamic import of JS glue plus wasm
 }
 ```
 
 Capabilities are probed once (encode a 1×1 image to each type, check `blob.type`) and cached
-in `sessionStorage`. The UI uses the same probe to say when something will be slower: *"AVIF
-is encoded in software here, so expect a few seconds per photo."*
+in `sessionStorage`. The UI uses the same probe to say when something will be slower: _"AVIF
+is encoded in software here, so expect a few seconds per photo."_
 
 ## Content Security Policy
 
@@ -181,11 +181,11 @@ exactly the kind of defect nobody reports.
 
 ## Performance budget
 
-| Metric | Budget |
-|---|---|
-| Initial JS, gzipped | < 100 KB |
-| Largest Contentful Paint, 4G mobile | < 1.5 s |
-| 12 MP HEIC → JPEG, mid-range laptop | < 2 s |
+| Metric                                | Budget          |
+| ------------------------------------- | --------------- |
+| Initial JS, gzipped                   | < 100 KB        |
+| Largest Contentful Paint, 4G mobile   | < 1.5 s         |
+| 12 MP HEIC → JPEG, mid-range laptop   | < 2 s           |
 | Main-thread long tasks during a batch | none over 50 ms |
 
 Codecs are excluded from the initial budget because they load on demand and are cached by the
@@ -217,10 +217,10 @@ service worker.
 
 ## Open risks
 
-| Risk | Mitigation |
-|---|---|
-| libheif cannot decode some newer HEIC variants | Safari uses its native decoder first; the error names the limitation |
-| iOS kills the tab on large batches | Memory budget, sequential processing on mobile, an honest limit in the UI |
-| Colour shifts on P3 photos | Device test in phase 2, not at the end |
-| AVIF encoding is slow in wasm | Default speed setting tuned for ~1–3 s per 12 MP; progress shown |
-| A token change in itsmor breaks this UI | Pinned package version; Renovate-style bump PRs |
+| Risk                                           | Mitigation                                                                |
+| ---------------------------------------------- | ------------------------------------------------------------------------- |
+| libheif cannot decode some newer HEIC variants | Safari uses its native decoder first; the error names the limitation      |
+| iOS kills the tab on large batches             | Memory budget, sequential processing on mobile, an honest limit in the UI |
+| Colour shifts on P3 photos                     | Device test in phase 2, not at the end                                    |
+| AVIF encoding is slow in wasm                  | Default speed setting tuned for ~1–3 s per 12 MP; progress shown          |
+| A token change in itsmor breaks this UI        | Pinned package version; Renovate-style bump PRs                           |

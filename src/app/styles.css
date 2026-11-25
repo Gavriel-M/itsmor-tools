@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "@itsmor/tokens/theme.css";
+
+@theme {
+  --font-sans:
+    "Inter Variable", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono:
+    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+* {
+  scrollbar-color: var(--color-lapis) transparent;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-terracotta);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+noscript {
+  display: block;
+  padding: var(--grid-cell) 1rem;
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+.hairline-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size:
+    var(--grid-cell) 100%,
+    100% var(--grid-cell);
+  background-position:
+    center top,
+    left center;
+}
