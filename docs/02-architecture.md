@@ -45,12 +45,12 @@ and pool size is `min(hardwareConcurrency − 1, 4)`, dropping to 1–2 on mobil
 
 The browser's own codecs are fastest and cost nothing to download, but coverage is uneven:
 
-| Need                        | Native gap                  | WebAssembly fill                                             |
-| --------------------------- | --------------------------- | ------------------------------------------------------------ |
-| Decode HEIC                 | Only Safari decodes it      | `libheif-js`                                                 |
-| Encode WebP                 | Safari silently returns PNG | jSquash WebP                                                 |
-| Encode AVIF                 | Not exposed by canvas       | jSquash AVIF                                                 |
-| Images over ~16.7 MP on iOS | Canvas area limit           | Pure-wasm decode, resize and encode, never touching a canvas |
+| Need                         | Native gap                  | WebAssembly fill                                             |
+| ---------------------------- | --------------------------- | ------------------------------------------------------------ |
+| Decode HEIC                  | Only Safari decodes it      | `libheif-js`                                                 |
+| Encode WebP                  | Safari silently returns PNG | jSquash WebP                                                 |
+| Encode AVIF                  | Not exposed by canvas       | jSquash AVIF                                                 |
+| Images over the canvas limit | Probed canvas area limit    | Pure-wasm decode, resize and encode, never touching a canvas |
 
 The registry probes capabilities once at startup and picks per format. Codecs are fetched
 on first use, so a JPEG→PNG user never downloads an AVIF encoder.

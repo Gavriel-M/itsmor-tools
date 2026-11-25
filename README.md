@@ -11,9 +11,9 @@ forbids it from sending data anywhere, it works offline, and it shows you a live
 network requests made since you added a file. Photo metadata, including GPS location, is
 removed from every output, and you are told what was removed.
 
-> **Status:** scaffolded. The page and the tooling are in place; conversion is not built
-> yet. See [`docs/`](./docs) for the product brief, architecture, technical design and
-> implementation plan.
+> **Status:** the conversion engine is built and tested in Chromium and WebKit; the page
+> does not use it yet. See [`docs/`](./docs) for the product brief, architecture, technical
+> design and implementation plan.
 
 ## Documents
 
@@ -21,6 +21,7 @@ removed from every output, and you are told what was removed.
 2. [Architecture](./docs/02-architecture.md) — the shape of the system and why
 3. [Technical design](./docs/03-technical-design.md) — the pipeline, the policy, the tests
 4. [Implementation plan](./docs/04-implementation-plan.md) — the order of work
+5. [Spike findings](./docs/05-spike-findings.md) — what the risky paths measured, and what changed
 
 ## Licence
 
