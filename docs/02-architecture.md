@@ -22,13 +22,13 @@ the visitor's browser.
 
 ## Components
 
-| Component | Owns | Does not own |
-|---|---|---|
-| **UI** | Drop zone, queue, settings, results, privacy panel | Any pixel work |
-| **Scheduler** | Job queue, concurrency, memory budget, cancellation | Codecs |
-| **Worker** | One job at a time: decode → orient → resize → encode, plus metadata read | UI state |
-| **Codec registry** | Which decoder and encoder serve a format in this browser; lazy loading | Policy |
-| **Service worker** | Precache of app shell and every codec; offline | Anything user-supplied |
+| Component          | Owns                                                                     | Does not own           |
+| ------------------ | ------------------------------------------------------------------------ | ---------------------- |
+| **UI**             | Drop zone, queue, settings, results, privacy panel                       | Any pixel work         |
+| **Scheduler**      | Job queue, concurrency, memory budget, cancellation                      | Codecs                 |
+| **Worker**         | One job at a time: decode → orient → resize → encode, plus metadata read | UI state               |
+| **Codec registry** | Which decoder and encoder serve a format in this browser; lazy loading   | Policy                 |
+| **Service worker** | Precache of app shell and every codec; offline                           | Anything user-supplied |
 
 All pixel work happens off the main thread, so the UI stays at 60 fps while a batch runs.
 
@@ -45,12 +45,12 @@ and pool size is `min(hardwareConcurrency − 1, 4)`, dropping to 1–2 on mobil
 
 The browser's own codecs are fastest and cost nothing to download, but coverage is uneven:
 
-| Need | Native gap | WebAssembly fill |
-|---|---|---|
-| Decode HEIC | Only Safari decodes it | `libheif-js` |
-| Encode WebP | Safari silently returns PNG | jSquash WebP |
-| Encode AVIF | Not exposed by canvas | jSquash AVIF |
-| Images over ~16.7 MP on iOS | Canvas area limit | Pure-wasm decode, resize and encode, never touching a canvas |
+| Need                        | Native gap                  | WebAssembly fill                                             |
+| --------------------------- | --------------------------- | ------------------------------------------------------------ |
+| Decode HEIC                 | Only Safari decodes it      | `libheif-js`                                                 |
+| Encode WebP                 | Safari silently returns PNG | jSquash WebP                                                 |
+| Encode AVIF                 | Not exposed by canvas       | jSquash AVIF                                                 |
+| Images over ~16.7 MP on iOS | Canvas area limit           | Pure-wasm decode, resize and encode, never touching a canvas |
 
 The registry probes capabilities once at startup and picks per format. Codecs are fetched
 on first use, so a JPEG→PNG user never downloads an AVIF encoder.
@@ -81,17 +81,17 @@ private package would stop anyone from installing this one.
 
 ## Stack
 
-| Layer | Choice | Reason |
-|---|---|---|
-| Build | Vite | First-class workers and wasm; multi-page output S3 can serve |
-| UI | React 19, TypeScript (strict) | Matches itsmor |
-| Styles | Tailwind v4, `@itsmor/tokens` | Same utilities and values as itsmor |
-| Fonts | Inter, IBM Plex Mono, self-hosted via Fontsource | CSP forbids Google Fonts |
-| Worker RPC | Comlink | Typed calls instead of hand-rolled `postMessage` |
-| Metadata | exifr | Reads EXIF, GPS, XMP from JPEG and HEIC; MIT |
-| ZIP | fflate | Small, fast, MIT, runs in a worker |
-| Offline | vite-plugin-pwa (Workbox) | Precache manifest generated from the build |
-| Tests | Vitest, Playwright (Chromium, WebKit, Firefox) | Unit plus real-engine codec coverage |
+| Layer      | Choice                                           | Reason                                                       |
+| ---------- | ------------------------------------------------ | ------------------------------------------------------------ |
+| Build      | Vite                                             | First-class workers and wasm; multi-page output S3 can serve |
+| UI         | React 19, TypeScript (strict)                    | Matches itsmor                                               |
+| Styles     | Tailwind v4, `@itsmor/tokens`                    | Same utilities and values as itsmor                          |
+| Fonts      | Inter, IBM Plex Mono, self-hosted via Fontsource | CSP forbids Google Fonts                                     |
+| Worker RPC | Comlink                                          | Typed calls instead of hand-rolled `postMessage`             |
+| Metadata   | exifr                                            | Reads EXIF, GPS, XMP from JPEG and HEIC; MIT                 |
+| ZIP        | fflate                                           | Small, fast, MIT, runs in a worker                           |
+| Offline    | vite-plugin-pwa (Workbox)                        | Precache manifest generated from the build                   |
+| Tests      | Vitest, Playwright (Chromium, WebKit, Firefox)   | Unit plus real-engine codec coverage                         |
 
 ## Licences
 

@@ -11,8 +11,9 @@ forbids it from sending data anywhere, it works offline, and it shows you a live
 network requests made since you added a file. Photo metadata, including GPS location, is
 removed from every output, and you are told what was removed.
 
-> **Status:** in design. See [`docs/`](./docs) for the product brief, architecture,
-> technical design and implementation plan.
+> **Status:** scaffolded. The page and the tooling are in place; conversion is not built
+> yet. See [`docs/`](./docs) for the product brief, architecture, technical design and
+> implementation plan.
 
 ## Documents
 

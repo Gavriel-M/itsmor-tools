@@ -21,26 +21,26 @@ network requests made since they added a file. That count stays at zero.
 
 ## Who it is for
 
-| Reader | Arrives from | Decides | What answers it |
-|---|---|---|---|
-| Someone with a HEIC that will not open | A search | *Can I trust this with my photo?* | The promise, visible before the drop zone; a fast, obvious result |
-| A visitor from itsmor.com | The portfolio | *Is the craft real?* | The privacy proof, the polish, and a public repo that holds up |
-| An engineer reading the code | GitHub | *Does the public work hold up?* | Small, typed, tested code; these documents |
+| Reader                                 | Arrives from  | Decides                           | What answers it                                                   |
+| -------------------------------------- | ------------- | --------------------------------- | ----------------------------------------------------------------- |
+| Someone with a HEIC that will not open | A search      | _Can I trust this with my photo?_ | The promise, visible before the drop zone; a fast, obvious result |
+| A visitor from itsmor.com              | The portfolio | _Is the craft real?_              | The privacy proof, the polish, and a public repo that holds up    |
+| An engineer reading the code           | GitHub        | _Does the public work hold up?_   | Small, typed, tested code; these documents                        |
 
 ## v1 scope
 
 **Images only.** One tool, done well.
 
-| | Formats |
-|---|---|
-| **In** | JPEG, PNG, WebP, AVIF, HEIC/HEIF, GIF (first frame), BMP |
-| **Out** | JPEG, PNG, WebP, AVIF |
+|         | Formats                                                  |
+| ------- | -------------------------------------------------------- |
+| **In**  | JPEG, PNG, WebP, AVIF, HEIC/HEIF, GIF (first frame), BMP |
+| **Out** | JPEG, PNG, WebP, AVIF                                    |
 
 - Batch: drop many files, convert all, download one by one or as a ZIP.
 - Settings: output format, quality, optional maximum dimension.
 - Before and after size for every file.
 - **Metadata report.** Every output is written without metadata. The user is told what was
-  removed, per file: *GPS location removed · Camera model removed · Date taken removed*.
+  removed, per file: _GPS location removed · Camera model removed · Date taken removed_.
 - Works on mobile, with limits stated honestly rather than discovered as a crash.
 
 ## Not in v1
@@ -66,13 +66,13 @@ room for a second tool without a new domain.
 
 ## Decisions taken
 
-| Question | Decision |
-|---|---|
-| Hosting | Subdomain, separate repo |
-| Scope | Images only |
-| Positioning | Verifiable privacy |
+| Question      | Decision                                                             |
+| ------------- | -------------------------------------------------------------------- |
+| Hosting       | Subdomain, separate repo                                             |
+| Scope         | Images only                                                          |
+| Positioning   | Verifiable privacy                                                   |
 | Design tokens | Public `@itsmor/tokens` package, published from the itsmor workspace |
-| Stack | Vite, React 19, TypeScript, Tailwind v4 |
-| Licence | MIT; no GPL dependencies |
-| Mobile | First class |
-| Metadata | Removed by default and reported |
+| Stack         | Vite, React 19, TypeScript, Tailwind v4                              |
+| Licence       | MIT; no GPL dependencies                                             |
+| Mobile        | First class                                                          |
+| Metadata      | Removed by default and reported                                      |
