@@ -21,6 +21,7 @@ removed from every output, and you are told what was removed.
 2. [Architecture](./docs/02-architecture.md) — the shape of the system and why
 3. [Technical design](./docs/03-technical-design.md) — the pipeline, the policy, the tests
 4. [Implementation plan](./docs/04-implementation-plan.md) — the order of work
+5. [Spike findings](./docs/05-spike-findings.md) — what the risky paths measured, and what changed
 
 ## Licence
 

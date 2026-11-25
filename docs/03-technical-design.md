@@ -66,8 +66,11 @@ way. The main thread never holds decoded pixels.
 5. **Resize** if `maxDimension` is set. Native: draw to an `OffscreenCanvas` at the target size
    with `imageSmoothingQuality = "high"`. Wasm: jSquash resize (Lanczos3).
 6. **Encode.**
-   - JPEG and PNG: `OffscreenCanvas.convertToBlob`. **Check the returned `blob.type`**:
-     engines that do not support a type silently return PNG.
+   - JPEG: mozjpeg, from pixels read back off the canvas or out of the wasm decoder. The
+     native encoder is 3.7× larger at a comparable setting
+     ([05 · Spike findings](./05-spike-findings.md#size)).
+   - PNG: `OffscreenCanvas.convertToBlob`. **Check the returned `blob.type`**: engines that
+     do not support a type silently return PNG.
    - WebP: native where supported, jSquash otherwise.
    - AVIF: always jSquash.
    - Encoders write fresh files, so **no input metadata survives**. That is the guarantee the
@@ -156,10 +159,11 @@ A small, always-visible panel:
 ## Colour
 
 iPhone photos are Display P3. Pixels drawn into a default canvas are converted to sRGB by the
-browser; libheif returns pixels in the file's space along with its ICC profile. v1 converts
-every output to sRGB and tags it as such, the only space every viewer agrees on. Wide-gamut
-output is a later option. **To verify early on real devices**, because a quiet colour shift is
-exactly the kind of defect nobody reports.
+browser; libheif returns pixels in the file's space. When the input's ICC profile is Display
+P3, wasm-decoded pixels go through a P3 → sRGB matrix in linear light before encoding. v1
+writes sRGB only, the space every viewer agrees on. Measured against ColorSync, both paths
+match within compression noise; leaving P3 unconverted loses 16% of saturation
+([05 · Spike findings](./05-spike-findings.md#colour)).
 
 ## Design system
 

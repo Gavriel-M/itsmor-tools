@@ -5,19 +5,19 @@
 Ordered so the riskiest unknowns are measured first, and so each phase ends with something
 that runs.
 
-| #   | Phase                                          | Ends with                                                                                                   | Depends on                          | State |
-| --- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------- | ----- |
-| 0   | **Repo and docs**                              | This repo, public, with documents 01–04                                                                     | —                                   | Done  |
-| 1   | **`@itsmor/tokens`** (itsmor PR `ITSMOR-0016`) | `packages/tokens` in the itsmor workspace, the guard moved to it, published to npm                          | npm org `itsmor`                    | Done  |
-| 2   | **Spike: the hard paths**                      | A throwaway page converting a 24 MP P3 HEIC to JPEG and AVIF on an iPhone, with timings and colour compared | —                                   |       |
-| 3   | **Scaffold**                                   | Vite, React, Tailwind, tokens, fonts, lint, format, CI; the empty page in itsmor's design                   | Phase 1 (or a temporary local link) | Done  |
-| 4   | **Engine**                                     | Sniffing, worker, scheduler, native path, JPEG/PNG/WebP; unit tests                                         | 3                                   |       |
-| 5   | **Wasm codecs**                                | HEIC decode, AVIF and WebP encode, the large-image path, the capability probe                               | 2, 4                                |       |
-| 6   | **UI**                                         | Drop zone, queue, settings, results, before and after sizes, ZIP, metadata report                           | 4                                   |       |
-| 7   | **Privacy and offline**                        | CSP in dev and preview, service worker, the privacy panel                                                   | 6                                   |       |
-| 8   | **Hardening**                                  | Playwright across three engines, accessibility pass, performance budget, device test                        | 7                                   |       |
-| 9   | **Deploy**                                     | `tools.itsmor.com/convert` live through CloudFront                                                          | AWS access, DNS                     |       |
-| 10  | **Portfolio entry**                            | A card on itsmor.com `/work` and a line in the GitHub profile README                                        | 9                                   |       |
+| #   | Phase                                          | Ends with                                                                                                   | Depends on                          | State       |
+| --- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------- | ----------- |
+| 0   | **Repo and docs**                              | This repo, public, with documents 01–04                                                                     | —                                   | Done        |
+| 1   | **`@itsmor/tokens`** (itsmor PR `ITSMOR-0016`) | `packages/tokens` in the itsmor workspace, the guard moved to it, published to npm                          | npm org `itsmor`                    | Done        |
+| 2   | **Spike: the hard paths**                      | A throwaway page converting a 24 MP P3 HEIC to JPEG and AVIF on an iPhone, with timings and colour compared | —                                   | Mostly done |
+| 3   | **Scaffold**                                   | Vite, React, Tailwind, tokens, fonts, lint, format, CI; the empty page in itsmor's design                   | Phase 1 (or a temporary local link) | Done        |
+| 4   | **Engine**                                     | Sniffing, worker, scheduler, native path, JPEG/PNG/WebP; unit tests                                         | 3                                   |             |
+| 5   | **Wasm codecs**                                | HEIC decode, AVIF and WebP encode, the large-image path, the capability probe                               | 2, 4                                |             |
+| 6   | **UI**                                         | Drop zone, queue, settings, results, before and after sizes, ZIP, metadata report                           | 4                                   |             |
+| 7   | **Privacy and offline**                        | CSP in dev and preview, service worker, the privacy panel                                                   | 6                                   |             |
+| 8   | **Hardening**                                  | Playwright across three engines, accessibility pass, performance budget, device test                        | 7                                   |             |
+| 9   | **Deploy**                                     | `tools.itsmor.com/convert` live through CloudFront                                                          | AWS access, DNS                     |             |
+| 10  | **Portfolio entry**                            | A card on itsmor.com `/work` and a line in the GitHub profile README                                        | 9                                   |             |
 
 ## Done so far
 
@@ -32,6 +32,10 @@ publishing, with provenance. 0.1.1 is the latest version. As built, the module i
 `src/index.ts` and the stylesheet ships as `@itsmor/tokens/theme.css`, not the `tokens.ts`
 and `tokens.css` named below; it also exports `GRID_CELL` and puts `--grid-cell` and
 `--grid-line` on `:root`.
+
+**Phase 2.** Measured on Chromium, WebKit and an iPhone; the findings and the decisions they
+forced are in [05 · Spike findings](./05-spike-findings.md). Outstanding: the 24 MP sample and
+two picker variants on the iPhone.
 
 **Phase 3.** Vite multi-page build with `/` and `/convert/`, React 19, strict TypeScript,
 Tailwind v4 reading `@itsmor/tokens` from npm rather than a local link, Inter and IBM Plex

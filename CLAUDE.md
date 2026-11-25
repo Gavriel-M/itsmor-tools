@@ -142,6 +142,13 @@ it.
   screenshot is a 500px layout cropped to 390, and looks like horizontal overflow. To check a
   phone width, load the page in a 390px-wide `<iframe>` and screenshot that.
 - **Prettier formats `docs/` too**, including padding table columns, as in itsmor.
+- **Test on a phone over HTTPS, never plain HTTP.** WebKit runs JavaScript about 6.5× slower
+  in a non-secure context, and a LAN address over HTTP is one: libheif took 30 s instead of
+  0.6 s. `pnpm dev:lan` alone gives misleading timings; serve it with a certificate the phone
+  trusts (mkcert's root CA installed as a profile).
+- **iOS converts photos before the page sees them.** Choosing from Photos through
+  `accept="image/*"` delivers a JPEG with GPS already removed. Don't assume a phone user's
+  input is HEIC, and don't credit the tool for removing what was never there.
 
 ## Code Conventions
 
